@@ -102,6 +102,8 @@ def main(args):
     model = model.to(device)
     model = nn.DataParallel(model)
 
+  device = torch.device('cpu')  # TODO: delete after mapping on CUDA
+
   # Evaluation
   model.eval()
   img = image_process(args.image_path)

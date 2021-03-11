@@ -52,14 +52,14 @@ def save_checkpoint(state, is_best, fpath='checkpoint.pth.tar'):
 def load_checkpoint(fpath):
   if global_args.run_on_remote:
     mox.file.shift('os', 'mox')
-    checkpoint = torch.load(fpath)
+    checkpoint = torch.load(fpath,map_location=torch.device('cpu'))
     print("=> Loaded checkpoint '{}'".format(fpath))
     return checkpoint
   else:
     load_path = fpath
 
     if osp.isfile(load_path):
-      checkpoint = torch.load(load_path)
+      checkpoint = torch.load(load_path,map_location=torch.device('cpu'))
       print("=> Loaded checkpoint '{}'".format(load_path))
       return checkpoint
     else:

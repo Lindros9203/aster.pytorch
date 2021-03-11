@@ -162,7 +162,7 @@ def main(args):
           .format(start_iters, best_res))
   
   if args.cuda:
-    device = torch.device("cuda")
+    device = torch.device("cpu")   # TODO: opravit na cudu
     model = model.to(device)
     model = nn.DataParallel(model)
 

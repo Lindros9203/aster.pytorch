@@ -23,7 +23,7 @@ from config import get_args
 global_args = get_args(sys.argv[1:])
 
 class BaseTrainer(object):
-  def __init__(self, model, metric, logs_dir, iters=0, best_res=-1, grad_clip=-1, use_cuda=True, loss_weights={}):
+  def __init__(self, model, metric, logs_dir, iters=0, best_res=-1, grad_clip=-1, use_cuda=False, loss_weights={}):
     super(BaseTrainer, self).__init__()
     self.model = model
     self.metric = metric
@@ -39,7 +39,7 @@ class BaseTrainer(object):
   def train(self, epoch, data_loader, optimizer, current_lr=0.0, 
             print_freq=100, train_tfLogger=None, is_debug=False,
             evaluator=None, test_loader=None, eval_tfLogger=None,
-            test_dataset=None, test_freq=1000):
+            test_dataset=None, test_freq=2):
 
     self.model.train()
 
@@ -132,7 +132,8 @@ class BaseTrainer(object):
 
       #====== evaluation ======#
       if self.iters % test_freq == 0:
-        # only symmetry branch
+        
+          # only symmetry branch
         if 'loss_rec' not in output_dict['losses']:
           is_best = True
           # self.best_res is alwarys equal to 1.0 
@@ -155,7 +156,7 @@ class BaseTrainer(object):
         # if epoch < 1:
         #   continue
         save_checkpoint({
-          'state_dict': self.model.module.state_dict(),
+          'state_dict': self.model.state_dict(),
           'iters': self.iters,
           'best_res': self.best_res,
         }, is_best, fpath=osp.join(self.logs_dir, 'checkpoint.pth.tar'))
