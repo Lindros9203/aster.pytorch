@@ -39,7 +39,7 @@ class BaseTrainer(object):
   def train(self, epoch, data_loader, optimizer, current_lr=0.0, 
             print_freq=100, train_tfLogger=None, is_debug=False,
             evaluator=None, test_loader=None, eval_tfLogger=None,
-            test_dataset=None, test_freq=2):
+            test_dataset=None, test_freq=100):
 
     self.model.train()
 
@@ -155,6 +155,7 @@ class BaseTrainer(object):
 
         # if epoch < 1:
         #   continue
+
         save_checkpoint({
           'state_dict': self.model.state_dict(),
           'iters': self.iters,
